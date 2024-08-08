@@ -1,4 +1,3 @@
 package ir.runique.core.domain
 
-class MyClass {
-}
+interface Error
