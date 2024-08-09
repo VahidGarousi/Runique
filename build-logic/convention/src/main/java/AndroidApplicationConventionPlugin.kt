@@ -1,4 +1,6 @@
 import com.android.build.api.dsl.ApplicationExtension
+import ir.runique.buildlogic.ExtensionType
+import ir.runique.buildlogic.configureBuildTypes
 import ir.runique.buildlogic.configureKotlinAndroid
 import ir.runique.buildlogic.libs
 import org.gradle.api.Plugin
@@ -21,6 +23,10 @@ internal class AndroidApplicationConventionPlugin : Plugin<Project> {
                     versionName = libs.findVersion("projectVersionName").get().toString()
                 }
                 configureKotlinAndroid(this)
+                configureBuildTypes(
+                    commonExtension = this,
+                    extensionType = ExtensionType.APPLICATION
+                )
             }
         }
     }
