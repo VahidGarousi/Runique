@@ -1,6 +1,6 @@
 [versions]
 agp = "8.5.1"
-kotlin = "1.9.0"
+kotlin = "1.9.23"
 coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -13,8 +13,16 @@ material = "1.12.0"
 jetbrainsKotlinJvm = "1.9.0"
 androidTools = "31.2.2"
 room = "2.6.1"
-ksp = "1.9.22-1.0.17"
+ksp = "1.9.23-1.0.20"
+desugar_jdk_libs = "2.0.4"
 
+# Project versions
+projectApplicationId = "ir.runique"
+projectVersionName = "1.0"
+projectMinSdkVersion = "25"
+projectTargetSdkVersion = "34"
+projectCompileSdkVersion = "34"
+projectVersionCode = "1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +41,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 
 
 # Gradle
@@ -48,3 +57,6 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
+
+
+runique-android-application = { id = "runique.android.application", version = "unspecefied" }
