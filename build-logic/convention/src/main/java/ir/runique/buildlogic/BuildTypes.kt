@@ -92,6 +92,7 @@ private fun BuildType.configureReleaseBuildType(
         value = "\"https://runique.pl-coding.com:8080\""
     )
 
+
     isMinifyEnabled = true
     proguardFiles(
         commonExtension.getDefaultProguardFile("proguard-android-optimize.txt"),
