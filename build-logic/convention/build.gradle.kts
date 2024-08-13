@@ -26,10 +26,13 @@ gradlePlugin {
             id = "runique.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
-
         register("androidLibraryCompose") {
             id = "runique.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
+        register("androidFeatureUi") {
+            id = "runique.android.feature.ui"
+            implementationClass = "AndroidFeatureUiConventionPlugin"
         }
     }
 }
