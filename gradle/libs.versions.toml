@@ -111,6 +111,11 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+room = { id = "androidx.room", version.ref = "room" }
+
+mapsplatform-secrets-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsPlugin"}
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 
 
@@ -119,6 +124,7 @@ runique-android-application-compose = { id = "runique.android.application.compos
 runique-android-library = { id = "runique.android.library", version = "unspecefied" }
 runique-android-library-compose = { id = "runique.android.library.compose", version = "unspecefied" }
 runique-android-feature-ui = { id = "runique.android.feature.ui", version = "unspecefied" }
+runique-android-room = { id = "runique.android.room", version = "unspecefied" }
 
 
 [bundles]

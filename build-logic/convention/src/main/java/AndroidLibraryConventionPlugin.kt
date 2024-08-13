@@ -15,7 +15,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
             }
-            extensions.configure<LibraryExtension>() {
+            extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 configureBuildTypes(
                     commonExtension = this,
