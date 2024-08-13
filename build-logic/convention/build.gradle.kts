@@ -64,5 +64,9 @@ gradlePlugin {
             id = "runique.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
+        register("androidJvmKtor") {
+            id = "runique.jvm.ktor"
+            implementationClass = "JvmKtorConventionPlugin"
+        }
     }
 }
