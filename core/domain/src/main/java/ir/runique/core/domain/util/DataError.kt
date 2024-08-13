@@ -1,11 +1,11 @@
-package ir.runique.core.domain
+package ir.runique.core.domain.util
 
-interface DataError : Error {
-    enum class DataError {
+sealed interface DataError: Error {
+    enum class Network: DataError {
         REQUEST_TIMEOUT,
         UNAUTHORIZED,
         CONFLICT,
-        TOO_MANY_RESPONSE,
+        TOO_MANY_REQUESTS,
         NO_INTERNET,
         PAYLOAD_TOO_LARGE,
         SERVER_ERROR,
@@ -13,7 +13,7 @@ interface DataError : Error {
         UNKNOWN
     }
 
-    enum class Local {
+    enum class Local: DataError {
         DISK_FULL
     }
 }
