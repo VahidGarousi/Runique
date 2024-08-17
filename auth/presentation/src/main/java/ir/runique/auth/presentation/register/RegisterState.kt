@@ -6,7 +6,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.TextFieldState
 import ir.runique.auth.domain.PasswordValidationState
 
-data class RegisterState(
+data class RegisterState constructor(
     val email: TextFieldState = TextFieldState(),
     val isEmailValid: Boolean = false,
     val password: TextFieldState = TextFieldState(),
