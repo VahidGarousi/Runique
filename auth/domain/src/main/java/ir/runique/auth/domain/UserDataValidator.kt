@@ -1,9 +1,6 @@
 package ir.runique.auth.domain
 
-import ir.runique.core.domain.util.EmptyDataResult
-import ir.runique.core.domain.util.Result
-
-class UserDataValidator constructor(
+class UserDataValidator(
     private val patternValidator: PatternValidator
 ) {
     fun isValidEmail(email: String): Boolean {

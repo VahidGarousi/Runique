@@ -47,10 +47,9 @@ import ir.runique.core.designsystem.components.RuniqueTextField
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun RegisterScreen(
+fun RegisterScreenRoot(
     modifier: Modifier = Modifier,
     onSignInClick: () -> Unit = {},
-    onSignUpClick: () -> Unit = {},
     onSuccessfulRegistration: () -> Unit = {},
     viewModel: RegisterViewModel = koinViewModel()
 ) {

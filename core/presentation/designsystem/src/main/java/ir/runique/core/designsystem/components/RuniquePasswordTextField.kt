@@ -97,6 +97,7 @@ fun RuniquePasswordTextField(
                     } else Color.Transparent,
                     shape = RoundedCornerShape(16.dp)
                 )
+                .padding(horizontal = 12.dp)
                 .onFocusChanged {
                     isFocused = it.isFocused
                 },
