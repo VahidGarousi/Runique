@@ -1,4 +1,4 @@
-package ir.runique.auth.presentation
+package ir.runique.auth.presentation.intro
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ir.runique.auth.presentation.R
 import ir.runique.core.designsystem.LogoIcon
 import ir.runique.core.designsystem.RuniqueTheme
 import ir.runique.core.designsystem.components.GradientBackground

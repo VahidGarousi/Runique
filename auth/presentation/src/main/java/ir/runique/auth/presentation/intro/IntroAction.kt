@@ -1,4 +1,4 @@
-package ir.runique.auth.presentation
+package ir.runique.auth.presentation.intro
 
 sealed interface IntroAction {
     data object OnSignUpClick : IntroAction
