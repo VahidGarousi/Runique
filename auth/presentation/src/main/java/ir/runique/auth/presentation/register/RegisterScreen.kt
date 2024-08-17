@@ -2,6 +2,7 @@
 
 package ir.runique.auth.presentation.register
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -44,6 +47,7 @@ import ir.runique.core.designsystem.components.GradientBackground
 import ir.runique.core.designsystem.components.RuniqueActionButton
 import ir.runique.core.designsystem.components.RuniquePasswordTextField
 import ir.runique.core.designsystem.components.RuniqueTextField
+import ir.runique.core.ui.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -53,20 +57,51 @@ fun RegisterScreenRoot(
     onSuccessfulRegistration: () -> Unit = {},
     viewModel: RegisterViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is RegisterEvent.Error -> {
+                keyboardController?.hide()
+                Toast.makeText(
+                    context,
+                    event.error.asString(context),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            RegisterEvent.RegistrationSuccess -> {
+                keyboardController?.hide()
+                Toast.makeText(
+                    context,
+                    R.string.registration_success,
+                    Toast.LENGTH_SHORT
+                ).show()
+                onSuccessfulRegistration()
+            }
+        }
+    }
     RegisterScreen(
+        modifier = modifier,
         state = viewModel.state,
-        onAction = viewModel::onAction
+        onAction = { action ->
+            when (action) {
+                is RegisterAction.OnLoginClick -> onSignInClick()
+                else -> viewModel.onAction(action)
+            }
+        }
     )
 }
 
 @Composable
 fun RegisterScreen(
+    modifier : Modifier = Modifier,
     state: RegisterState,
     onAction: (RegisterAction) -> Unit
 ) {
     GradientBackground {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .verticalScroll(rememberScrollState())
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
