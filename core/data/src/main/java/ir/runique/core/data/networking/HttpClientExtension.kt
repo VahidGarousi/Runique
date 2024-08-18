@@ -44,7 +44,10 @@ suspend inline fun <reified Response : Any> HttpClient.delete(
     }
 }
 
-suspend inline fun <reified Response : Any, reified Request : Any> HttpClient.post(
+suspend inline fun <
+        reified Request : Any,
+        reified Response : Any
+        > HttpClient.post(
     route: String,
     body: Request
 ): Result<Response, DataError.Network> {
