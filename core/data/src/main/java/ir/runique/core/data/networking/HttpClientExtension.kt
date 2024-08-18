@@ -45,8 +45,8 @@ suspend inline fun <reified Response : Any> HttpClient.delete(
 }
 
 suspend inline fun <
-        reified Response : Any,
-        reified Request : Any
+        reified Request : Any,
+        reified Response : Any
         > HttpClient.post(
     route: String,
     body: Request
