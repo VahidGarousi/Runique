@@ -1,6 +1,5 @@
 package ir.runique
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
@@ -11,6 +10,7 @@ import androidx.navigation.compose.navigation
 import ir.runique.auth.presentation.intro.IntroScreenRoot
 import ir.runique.auth.presentation.login.LoginScreenRoot
 import ir.runique.auth.presentation.register.RegisterScreenRoot
+import ir.runique.run.presentation.run_overview.RunOverviewScreenRoot
 
 @Composable
 fun NavigationRoot(
@@ -95,7 +95,7 @@ private fun NavGraphBuilder.runGraph(
         composable(
             route = "run_overview"
         ) {
-            Text(text = "Run overview")
+            RunOverviewScreenRoot()
         }
     }
 }
