@@ -15,11 +15,12 @@ import ir.runique.auth.presentation.register.RegisterScreenRoot
 @Composable
 fun NavigationRoot(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    isLoggedIn: Boolean
 ) {
     NavHost(
         navController = navController,
-        startDestination = "auth"
+        startDestination = if (isLoggedIn) "run" else "auth"
     ) {
         authGraph(navController = navController)
         runGraph(navController = navController)
