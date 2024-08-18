@@ -74,7 +74,7 @@ fun RegisterScreenRoot(
                 keyboardController?.hide()
                 Toast.makeText(
                     context,
-                    R.string.registration_success,
+                    R.string.registration_successful,
                     Toast.LENGTH_SHORT
                 ).show()
                 onSuccessfulRegistration()
@@ -116,7 +116,7 @@ fun RegisterScreen(
                 withStyle(
                     SpanStyle(
                         fontFamily = Poppins,
-                        color = RuniqueGray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 ) {
                     append(stringResource(R.string.already_have_an_account) + " ")
@@ -173,7 +173,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(16.dp))
             PasswordRequirements(
                 text = stringResource(
-                    id = R.string.at_least_x_correcter,
+                    id = R.string.at_least_x_characters,
                     UserDataValidator.MINIMUM_PASSWORD_LENGTH
                 ),
                 isValid = state.passwordValidationState.hasMinimumLength
@@ -188,7 +188,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(4.dp))
             PasswordRequirements(
                 text = stringResource(
-                    id = R.string.contains_lowercase_character,
+                    id = R.string.contains_lowercase_char,
                     UserDataValidator.MINIMUM_PASSWORD_LENGTH
                 ),
                 isValid = state.passwordValidationState.hasLowercaseLetter
@@ -196,7 +196,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(4.dp))
             PasswordRequirements(
                 text = stringResource(
-                    id = R.string.contains_uppercase_character,
+                    id = R.string.contains_uppercase_char,
                     UserDataValidator.MINIMUM_PASSWORD_LENGTH
                 ),
                 isValid = state.passwordValidationState.hasUppercaseLetter

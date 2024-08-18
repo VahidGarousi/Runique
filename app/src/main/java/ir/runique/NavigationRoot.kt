@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import ir.runique.auth.presentation.intro.IntroScreenRoot
+import ir.runique.auth.presentation.login.LoginScreenRoot
 import ir.runique.auth.presentation.register.RegisterScreenRoot
 
 @Composable
@@ -59,7 +60,25 @@ private fun NavGraphBuilder.authGraph(
         composable(
             route = "login"
         ) {
-
+            LoginScreenRoot(
+                onLoginSuccess = {
+                    navController.navigate("run") {
+                        popUpTo("auth") {
+                            inclusive = true
+                            saveState = true
+                        }
+                    }
+                },
+                onSignUpClick = {
+                    navController.navigate("register") {
+                        popUpTo("login") {
+                            inclusive = true
+                            saveState = true
+                        }
+                        restoreState = true
+                    }
+                }
+            )
         }
     }
 }
