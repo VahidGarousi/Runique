@@ -9,21 +9,23 @@ import androidx.compose.ui.Modifier
 @Composable
 fun RuniqueScaffold(
     modifier: Modifier = Modifier,
-    withGradiant: Boolean = true,
+    withGradient: Boolean = true,
     topAppBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
-    content: @Composable (paddingValues : PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
         topBar = topAppBar,
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = FabPosition.Center,
         modifier = modifier
-    ) { paddingValues: PaddingValues ->
-        if (withGradiant) {
+    ) { padding ->
+        if(withGradient) {
             GradientBackground {
-                content(paddingValues)
+                content(padding)
             }
+        } else {
+            content(padding)
         }
     }
 }
