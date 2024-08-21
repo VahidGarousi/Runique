@@ -8,9 +8,12 @@ android {
 
 dependencies {
     implementation(libs.coil.compose)
+    implementation(libs.bundles.koin)
     implementation(libs.google.maps.android.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.timber)
+
+    implementation(libs.google.android.gms.play.services.location)
 
     implementation(projects.core.domain)
     implementation(projects.run.domain)

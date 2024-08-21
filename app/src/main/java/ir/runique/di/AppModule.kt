@@ -4,6 +4,8 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import ir.runique.MainViewModel
+import ir.runique.RuniqueApplication
+import kotlinx.coroutines.CoroutineScope
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
@@ -18,5 +20,6 @@ val appModule = module {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
     }
+    single<CoroutineScope> { (androidApplication() as RuniqueApplication).applicationScope }
     viewModelOf(::MainViewModel)
 }
