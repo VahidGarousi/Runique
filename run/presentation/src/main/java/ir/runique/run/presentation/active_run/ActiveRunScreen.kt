@@ -2,7 +2,6 @@
 
 package ir.runique.run.presentation.active_run
 
-import android.Manifest
 import android.content.Context
 import android.os.Build
 import androidx.activity.ComponentActivity
@@ -33,6 +32,7 @@ import ir.runique.core.designsystem.components.RuniqueScaffold
 import ir.runique.core.designsystem.components.RuniqueToolbar
 import ir.runique.run.presentation.R
 import ir.runique.run.presentation.active_run.components.RunDataCard
+import ir.runique.run.presentation.active_run.map.TrackerMap
 import ir.runique.run.presentation.util.hasLocationPermission
 import ir.runique.run.presentation.util.hasNotificationPermission
 import ir.runique.run.presentation.util.shouldShowLocationPermissionRationale
@@ -145,6 +145,13 @@ fun ActiveRunScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
         ) {
+            TrackerMap(
+                isRunFinished = state.isRunFinished,
+                currentLocation = state.currentLocation,
+                locations = state.runData.locations,
+                onSnapShot = {},
+                modifier = Modifier.fillMaxSize()
+            )
             RunDataCard(
                 runData = state.runData,
                 elapsedTime = state.elapsedTime,
@@ -196,11 +203,11 @@ private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
     val hasLocationPermission = context.hasLocationPermission()
     val hasNotificationPermission = context.hasNotificationPermission()
     val locationPermission = arrayOf(
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION,
+        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+        android.Manifest.permission.ACCESS_FINE_LOCATION,
     )
     val notificationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        arrayOf(Manifest.permission.POST_NOTIFICATIONS)
+        arrayOf(android.Manifest.permission.POST_NOTIFICATIONS)
     } else arrayOf()
     when {
         !hasLocationPermission && !hasNotificationPermission -> {
