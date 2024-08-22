@@ -34,58 +34,59 @@ import ir.runique.run.presentation.R
 
 @Composable
 fun TrackerMap(
-    modifier: Modifier = Modifier,
-    isRunFinished: Boolean = false,
-    currentLocation: Location? = null,
-    locations: List<List<LocationTimestamp>> = emptyList(),
-    onSnapShot: (Bitmap) -> Unit
+    isRunFinished: Boolean,
+    currentLocation: Location?,
+    locations: List<List<LocationTimestamp>>,
+    onSnapshot: (Bitmap) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val mapStyle = remember {
         MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
     }
-    val cameraPosition = rememberCameraPositionState()
+    val cameraPositionState = rememberCameraPositionState()
     val markerState = rememberMarkerState()
+
     val markerPositionLat by animateFloatAsState(
         targetValue = currentLocation?.lat?.toFloat() ?: 0f,
-        animationSpec = tween(),
+        animationSpec = tween(durationMillis = 500),
         label = ""
     )
     val markerPositionLong by animateFloatAsState(
         targetValue = currentLocation?.long?.toFloat() ?: 0f,
-        animationSpec = tween(),
+        animationSpec = tween(durationMillis = 500),
         label = ""
     )
-
     val markerPosition = remember(markerPositionLat, markerPositionLong) {
         LatLng(markerPositionLat.toDouble(), markerPositionLong.toDouble())
     }
+
     LaunchedEffect(markerPosition, isRunFinished) {
-        if (isRunFinished) {
+        if (!isRunFinished) {
             markerState.position = markerPosition
         }
     }
+
     LaunchedEffect(currentLocation, isRunFinished) {
         if (currentLocation != null && !isRunFinished) {
-            val latLong = LatLng(currentLocation.lat, currentLocation.long)
-            cameraPosition.animate(
-                update = CameraUpdateFactory.newLatLngZoom(latLong, 17f)
+            val latLng = LatLng(currentLocation.lat, currentLocation.long)
+            cameraPositionState.animate(
+                CameraUpdateFactory.newLatLngZoom(latLng, 17f)
             )
         }
     }
+
     GoogleMap(
-        modifier = modifier,
-        cameraPositionState = cameraPosition,
+        cameraPositionState = cameraPositionState,
         properties = MapProperties(
             mapStyleOptions = mapStyle
         ),
         uiSettings = MapUiSettings(
             zoomControlsEnabled = false
-        ),
-        onMapLoaded = {
-
-        },
+        )
     ) {
+        RuniquePolylines(locations = locations)
+
         if (!isRunFinished && currentLocation != null) {
             MarkerComposable(
                 currentLocation,
@@ -93,7 +94,7 @@ fun TrackerMap(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(5.dp)
+                        .size(35.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.primary),
                     contentAlignment = Alignment.Center
@@ -102,11 +103,10 @@ fun TrackerMap(
                         imageVector = RunIcon,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(12.dp)
+                        modifier = Modifier.size(20.dp)
                     )
                 }
             }
-
         }
     }
 }

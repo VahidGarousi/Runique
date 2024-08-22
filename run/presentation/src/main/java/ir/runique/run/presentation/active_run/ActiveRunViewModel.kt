@@ -18,35 +18,29 @@ import kotlinx.coroutines.flow.stateIn
 
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker
-) : ViewModel() {
+): ViewModel() {
+
     var state by mutableStateOf(ActiveRunState())
         private set
 
     private val eventChannel = Channel<ActiveRunEvent>()
     val events = eventChannel.receiveAsFlow()
 
+    private val shouldTrack = snapshotFlow { state.shouldTrack }
+        .stateIn(viewModelScope, SharingStarted.Lazily, state.shouldTrack)
     private val hasLocationPermission = MutableStateFlow(false)
 
-    private val shouldTrack = snapshotFlow { state.shouldTrack }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = state.shouldTrack
-        )
-
-    private val isTracking =
-        combine(shouldTrack, hasLocationPermission) { shouldTrack, hasLocationPermission ->
-            shouldTrack && hasLocationPermission
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            false
-        )
+    private val isTracking = combine(
+        shouldTrack,
+        hasLocationPermission
+    ) { shouldTrack, hasPermission ->
+        shouldTrack && hasPermission
+    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     init {
         hasLocationPermission
-            .onEach { hasLocationPermission ->
-                if (hasLocationPermission) {
+            .onEach { hasPermission ->
+                if(hasPermission) {
                     runningTracker.startObservingLocation()
                 } else {
                     runningTracker.stopObservingLocation()
@@ -54,13 +48,11 @@ class ActiveRunViewModel(
             }
             .launchIn(viewModelScope)
 
-
         isTracking
-            .onEach {isTracking ->
-                runningTracker.saveIsTracking(isTracking = isTracking)
+            .onEach { isTracking ->
+                runningTracker.setIsTracking(isTracking = isTracking)
             }
             .launchIn(viewModelScope)
-
 
         runningTracker
             .currentLocation
@@ -85,7 +77,7 @@ class ActiveRunViewModel(
     }
 
     fun onAction(action: ActiveRunAction) {
-        when (action) {
+        when(action) {
             ActiveRunAction.OnFinishRunClick -> {
 
             }
@@ -97,27 +89,27 @@ class ActiveRunViewModel(
             }
             ActiveRunAction.OnToggleRunClick -> {
                 state = state.copy(
-                    hasStartedRunningAlready = true,
+                    hasStartedRunning = true,
                     shouldTrack = !state.shouldTrack
                 )
             }
             is ActiveRunAction.SubmitLocationPermissionInfo -> {
                 hasLocationPermission.value = action.acceptedLocationPermission
-                state = state.copy(showLocationRationale = action.showLocationRationale)
+                state = state.copy(
+                    showLocationRationale = action.showLocationRationale
+                )
             }
-
             is ActiveRunAction.SubmitNotificationPermissionInfo -> {
-                state = state.copy(showNotificationRationale = action.showNotificationRationale)
+                state = state.copy(
+                    showNotificationRationale = action.acceptedNotificationPermission
+                )
             }
-
-            is ActiveRunAction.OnDismissRationaleDialog -> {
+            is ActiveRunAction.DismissRationaleDialog -> {
                 state = state.copy(
                     showNotificationRationale = false,
                     showLocationRationale = false
                 )
             }
-
-            else -> Unit
         }
     }
 }
