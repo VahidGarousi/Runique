@@ -4,6 +4,7 @@ import android.app.Application
 import ir.runique.auth.data.di.authDataModule
 import ir.runique.auth.presentation.di.authViewModelModule
 import ir.runique.core.data.di.coreDataModule
+import ir.runique.core.database.di.databaseModule
 import ir.runique.di.appModule
 import ir.runique.run.location.di.locationModule
 import ir.runique.run.presentation.di.runPresentationModule
@@ -30,7 +31,8 @@ class RuniqueApplication : Application() {
                 coreDataModule,
                 appModule,
                 runPresentationModule,
-                locationModule
+                locationModule,
+                databaseModule
             )
         }
     }
