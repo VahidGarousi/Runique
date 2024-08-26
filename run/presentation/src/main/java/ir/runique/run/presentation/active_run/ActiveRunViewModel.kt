@@ -50,7 +50,7 @@ class ActiveRunViewModel(
 
         isTracking
             .onEach { isTracking ->
-                runningTracker.setIsTracking(isTracking = isTracking)
+                runningTracker.setIsTracking(isTracking)
             }
             .launchIn(viewModelScope)
 
@@ -101,7 +101,7 @@ class ActiveRunViewModel(
             }
             is ActiveRunAction.SubmitNotificationPermissionInfo -> {
                 state = state.copy(
-                    showNotificationRationale = action.acceptedNotificationPermission
+                    showNotificationRationale = action.showNotificationPermissionRationale
                 )
             }
             is ActiveRunAction.DismissRationaleDialog -> {
@@ -110,6 +110,7 @@ class ActiveRunViewModel(
                     showLocationRationale = false
                 )
             }
+            else -> Unit
         }
     }
 }

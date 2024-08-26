@@ -106,7 +106,7 @@ private fun NavGraphBuilder.runGraph(
             route = "active_run"
         ) {
             ActiveRunScreenRoot(
-                navigateUp = { navController.navigateUp() }
+
             )
         }
     }

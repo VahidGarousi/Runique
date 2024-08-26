@@ -41,23 +41,13 @@ import ir.runique.run.presentation.util.shouldShowLocationPermissionRationale
 import ir.runique.run.presentation.util.shouldShowNotificationPermissionRationale
 import org.koin.androidx.compose.koinViewModel
 
-
-
-
 @Composable
 fun ActiveRunScreenRoot(
     viewModel: ActiveRunViewModel = koinViewModel(),
-    navigateUp : () -> Unit
 ) {
     ActiveRunScreen(
         state = viewModel.state,
-        onAction = { action ->
-            when(action) {
-                ActiveRunAction.OnBackClick -> navigateUp()
-                else -> Unit
-            }
-            viewModel.onAction(action)
-        }
+        onAction = viewModel::onAction
     )
 }
 
@@ -70,10 +60,8 @@ private fun ActiveRunScreen(
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { perms ->
-        val hasCourseLocationPermission =
-            perms[Manifest.permission.ACCESS_COARSE_LOCATION] == true
-        val hasFineLocationPermission =
-            perms[Manifest.permission.ACCESS_FINE_LOCATION] == true
+        val hasCourseLocationPermission = perms[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        val hasFineLocationPermission = perms[Manifest.permission.ACCESS_FINE_LOCATION] == true
         val hasNotificationPermission = if (Build.VERSION.SDK_INT >= 33) {
             perms[Manifest.permission.POST_NOTIFICATIONS] == true
         } else true
@@ -99,8 +87,7 @@ private fun ActiveRunScreen(
     LaunchedEffect(key1 = true) {
         val activity = context as ComponentActivity
         val showLocationRationale = activity.shouldShowLocationPermissionRationale()
-        val showNotificationPermissionRationale =
-            activity.shouldShowNotificationPermissionRationale()
+        val showNotificationRationale = activity.shouldShowNotificationPermissionRationale()
 
         onAction(
             ActiveRunAction.SubmitLocationPermissionInfo(
@@ -111,11 +98,11 @@ private fun ActiveRunScreen(
         onAction(
             ActiveRunAction.SubmitNotificationPermissionInfo(
                 acceptedNotificationPermission = context.hasNotificationPermission(),
-                showNotificationPermissionRationale = showNotificationPermissionRationale
+                showNotificationPermissionRationale = showNotificationRationale
             )
         )
 
-        if (!showLocationRationale && !showNotificationPermissionRationale) {
+        if (!showLocationRationale && !showNotificationRationale) {
             permissionLauncher.requestRuniquePermissions(context)
         }
     }
@@ -159,10 +146,9 @@ private fun ActiveRunScreen(
                 isRunFinished = state.isRunFinished,
                 currentLocation = state.currentLocation,
                 locations = state.runData.locations,
-                modifier = Modifier.fillMaxSize(),
-                onSnapshot = {
-
-                }
+                onSnapshot = {},
+                modifier = Modifier
+                    .fillMaxSize()
             )
             RunDataCard(
                 elapsedTime = state.elapsedTime,
