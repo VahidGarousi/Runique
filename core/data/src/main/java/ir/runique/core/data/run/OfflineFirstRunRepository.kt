@@ -1,5 +1,10 @@
 package ir.runique.core.data.run
 
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
+import io.ktor.client.plugins.plugin
+import ir.runique.core.data.networking.get
 import ir.runique.core.database.dao.RunPendingSynDao
 import ir.runique.core.database.mappers.toRun
 import ir.runique.core.domain.SessionStorage
@@ -27,7 +32,8 @@ class OfflineFirstRunRepository(
     private val applicationScope: CoroutineScope,
     private val runPendingSynDao: RunPendingSynDao,
     private val sessionStorage: SessionStorage,
-    private val syncRunScheduler: SyncRunScheduler
+    private val syncRunScheduler: SyncRunScheduler,
+    private val client: HttpClient
 ) : RunRepository {
     override fun getRuns(): Flow<List<Run>> = localRunDataSource.getRuns()
 
@@ -138,5 +144,19 @@ class OfflineFirstRunRepository(
             createJobs.joinAll()
             deleteJobs.joinAll()
         }
+    }
+
+    override suspend fun logOut(): EmptyResult<DataError.Network> {
+        val result = client.get<Unit>(
+            route = "/logout"
+        ).asEmptyDataResult()
+        client.plugin(Auth).providers.filterIsInstance<BearerAuthProvider>()
+            .firstOrNull()
+            ?.clearToken()
+        return result
+    }
+
+    override suspend fun deleteAllRuns() {
+        localRunDataSource.deleteAllRuns()
     }
 }
