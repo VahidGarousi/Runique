@@ -128,6 +128,12 @@ private fun NavGraphBuilder.runGraph(
                             ActiveRunService.createStopAction(context = context)
                         )
                     }
+                },
+                onFinish = {
+                    navController.navigateUp()
+                },
+                onBack = {
+                    navController.navigateUp()
                 }
             )
         }

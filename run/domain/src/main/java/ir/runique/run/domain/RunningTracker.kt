@@ -35,6 +35,7 @@ class RunningTracker(
     private val _elapsedTime = MutableStateFlow(Duration.ZERO)
     val elapsedTime = _elapsedTime.asStateFlow()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val currentLocation = isObservingLocation
         .flatMapLatest { isObservingLocation ->
             if (isObservingLocation) {
@@ -125,6 +126,13 @@ class RunningTracker(
 
     fun stopObservingLocation() {
         isObservingLocation.value = false
+    }
+
+    fun finishRun() {
+        stopObservingLocation()
+        setIsTracking(false)
+        _elapsedTime.value = Duration.ZERO
+        _runData.value = RunData()
     }
 }
 

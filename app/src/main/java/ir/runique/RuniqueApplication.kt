@@ -7,6 +7,7 @@ import ir.runique.core.data.di.coreDataModule
 import ir.runique.core.database.di.databaseModule
 import ir.runique.di.appModule
 import ir.runique.run.location.di.locationModule
+import ir.runique.run.network.di.networkModule
 import ir.runique.run.presentation.di.runPresentationModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -32,7 +33,8 @@ class RuniqueApplication : Application() {
                 appModule,
                 runPresentationModule,
                 locationModule,
-                databaseModule
+                databaseModule,
+                networkModule
             )
         }
     }

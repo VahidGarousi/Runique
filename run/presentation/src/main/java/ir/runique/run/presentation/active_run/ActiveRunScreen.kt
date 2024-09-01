@@ -4,7 +4,9 @@ package ir.runique.run.presentation.active_run
 
 import android.Manifest
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Build
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -32,6 +34,7 @@ import ir.runique.core.designsystem.components.RuniqueFloatingActionButton
 import ir.runique.core.designsystem.components.RuniqueOutlinedActionButton
 import ir.runique.core.designsystem.components.RuniqueScaffold
 import ir.runique.core.designsystem.components.RuniqueToolbar
+import ir.runique.core.ui.ObserveAsEvents
 import ir.runique.run.presentation.R
 import ir.runique.run.presentation.active_run.components.RunDataCard
 import ir.runique.run.presentation.active_run.map.TrackerMap
@@ -41,15 +44,41 @@ import ir.runique.run.presentation.util.hasNotificationPermission
 import ir.runique.run.presentation.util.shouldShowLocationPermissionRationale
 import ir.runique.run.presentation.util.shouldShowNotificationPermissionRationale
 import org.koin.androidx.compose.koinViewModel
+import java.io.ByteArrayOutputStream
 
 @Composable
 fun ActiveRunScreenRoot(
     onServiceToggle: (isServiceRunning: Boolean) -> Unit,
+    onFinish: () -> Unit,
+    onBack: () -> Unit,
     viewModel: ActiveRunViewModel = koinViewModel(),
 ) {
+    val context = LocalContext.current
+    ObserveAsEvents(flow = viewModel.events) { event ->
+        when(event) {
+            is ActiveRunEvent.Error -> {
+                Toast.makeText(
+                    context,
+                    event.error.asString(context),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            ActiveRunEvent.RunSaved -> onFinish()
+        }
+    }
     ActiveRunScreen(
         state = viewModel.state,
-        onAction = viewModel::onAction,
+        onAction = {action ->
+            when(action) {
+                ActiveRunAction.OnBackClick -> {
+                    if (!viewModel.state.hasStartedRunning) {
+                        onBack()
+                    }
+                }
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        },
         onServiceToggle = onServiceToggle
     )
 }
@@ -169,7 +198,14 @@ private fun ActiveRunScreen(
                 isRunFinished = state.isRunFinished,
                 currentLocation = state.currentLocation,
                 locations = state.runData.locations,
-                onSnapshot = {},
+                onSnapshot = { bitmap: Bitmap ->
+                    val stream = ByteArrayOutputStream()
+                    stream.use {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, it)
+                        it.toByteArray()
+                    }
+                    onAction(ActiveRunAction.OnRunProcessed(stream.toByteArray()))
+                },
                 modifier = Modifier
                     .fillMaxSize()
             )
