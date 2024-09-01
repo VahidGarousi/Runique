@@ -8,6 +8,7 @@ import ir.runique.core.domain.run.RemoteRunDataSource
 import ir.runique.core.domain.run.Run
 import ir.runique.core.domain.run.RunId
 import ir.runique.core.domain.run.RunRepository
+import ir.runique.core.domain.run.SyncRunScheduler
 import ir.runique.core.domain.util.DataError
 import ir.runique.core.domain.util.EmptyResult
 import ir.runique.core.domain.util.Result
@@ -25,7 +26,8 @@ class OfflineFirstRunRepository(
     private val remoteRunDataSource: RemoteRunDataSource,
     private val applicationScope: CoroutineScope,
     private val runPendingSynDao: RunPendingSynDao,
-    private val sessionStorage: SessionStorage
+    private val sessionStorage: SessionStorage,
+    private val syncRunScheduler: SyncRunScheduler
 ) : RunRepository {
     override fun getRuns(): Flow<List<Run>> = localRunDataSource.getRuns()
 
@@ -54,6 +56,14 @@ class OfflineFirstRunRepository(
         )
         return when (remoteResult) {
             is Result.Error -> {
+                applicationScope.launch {
+                    syncRunScheduler.scheduleSync(
+                        SyncRunScheduler.SyncType.CreateRun(
+                            run = runWithId,
+                            mapPictureBytes = mapPicture
+                        )
+                    )
+                }.join()
                 Result.Success(Unit)
             }
 
@@ -74,9 +84,19 @@ class OfflineFirstRunRepository(
             runPendingSynDao.deleteRunPendingSyncEntity(runId = runId)
             return
         }
-        applicationScope.async {
+        val remoteResult = applicationScope.async {
             remoteRunDataSource.deleteRun(runId).asEmptyDataResult()
         }.await()
+
+        if (remoteResult is Result.Error) {
+            applicationScope.launch {
+                syncRunScheduler.scheduleSync(
+                    SyncRunScheduler.SyncType.DeletedRun(
+                        runId = runId
+                    )
+                )
+            }.join()
+        }
     }
 
     override suspend fun syncPendingRuns() {
