@@ -24,8 +24,8 @@ class RunOverviewViewModel(
                 val runUi = runs.map { it.toRunUi() }
                 state = state.copy(runs = runUi)
             }.launchIn(viewModelScope)
-
         viewModelScope.launch {
+            runRepository.syncPendingRuns()
             runRepository.fetchRuns()
         }
     }
