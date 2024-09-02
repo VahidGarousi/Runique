@@ -1,6 +1,8 @@
 package ir.runique
 
 import android.app.Application
+import android.content.Context
+import com.google.android.play.core.splitcompat.SplitCompat
 import ir.runique.auth.data.di.authDataModule
 import ir.runique.auth.presentation.di.authViewModelModule
 import ir.runique.core.data.di.coreDataModule
@@ -41,5 +43,10 @@ class RuniqueApplication : Application() {
                 runDataModule
             )
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        SplitCompat.install(this)
     }
 }

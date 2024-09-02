@@ -20,6 +20,7 @@ import ir.runique.run.presentation.run_overview.RunOverviewScreenRoot
 fun NavigationRoot(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    onAnalyticsClick: () -> Unit = {},
     isLoggedIn: Boolean
 ) {
     NavHost(
@@ -27,7 +28,7 @@ fun NavigationRoot(
         startDestination = if (isLoggedIn) "run" else "auth"
     ) {
         authGraph(navController = navController)
-        runGraph(navController = navController)
+        runGraph(navController = navController, onAnalyticsClick = onAnalyticsClick)
     }
 }
 
@@ -90,7 +91,8 @@ private fun NavGraphBuilder.authGraph(
 
 
 private fun NavGraphBuilder.runGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    onAnalyticsClick: () -> Unit = {}
 ) {
     navigation(
         startDestination = "run_overview",
@@ -109,7 +111,8 @@ private fun NavGraphBuilder.runGraph(
                             inclusive = true
                         }
                     }
-                }
+                },
+                onAnalyticsClick = onAnalyticsClick
             )
         }
         composable(
