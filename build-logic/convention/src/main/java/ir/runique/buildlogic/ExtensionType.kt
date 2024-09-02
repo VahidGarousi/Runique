@@ -2,5 +2,6 @@ package ir.runique.buildlogic
 
 enum class ExtensionType {
     APPLICATION,
-    LIBRARY
+    LIBRARY,
+    DYNAMIC_FEATURE
 }
