@@ -102,6 +102,13 @@ private fun NavGraphBuilder.runGraph(
             RunOverviewScreenRoot(
                 onStartRunClick = {
                     navController.navigate("active_run")
+                },
+                onLogoutClick = {
+                    navController.navigate("auth") {
+                        popUpTo("run") {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -128,6 +135,12 @@ private fun NavGraphBuilder.runGraph(
                             ActiveRunService.createStopAction(context = context)
                         )
                     }
+                },
+                onFinish = {
+                    navController.navigateUp()
+                },
+                onBack = {
+                    navController.navigateUp()
                 }
             )
         }

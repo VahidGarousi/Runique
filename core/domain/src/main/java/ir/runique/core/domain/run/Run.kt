@@ -9,12 +9,12 @@ data class Run(
     val id: String?, // null if new run
     val duration: Duration,
     val dateTimeUtc: ZonedDateTime,
-    val distanceInMeters: Int,
+    val distanceMeters: Int,
     val location: Location,
     val maxSpeedKmh: Double,
     val totalElevationMeters: Int,
     val mapPictureUrl: String?
 ) {
     val avgSpeedKmh: Double
-        get() = (distanceInMeters / 1000.0) / duration.toDouble(DurationUnit.HOURS)
+        get() = (distanceMeters / 1000.0) / duration.toDouble(DurationUnit.HOURS)
 }

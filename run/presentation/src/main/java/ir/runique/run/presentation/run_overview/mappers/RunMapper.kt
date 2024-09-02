@@ -16,7 +16,7 @@ fun Run.toRunUi(): RunUi {
     val formattedDateTime = DateTimeFormatter
         .ofPattern("MMM dd, yyyy - HH:mma")
         .format(dateTimeInLocalTime)
-    val distanceKm = distanceInMeters / 1000.0
+    val distanceKm = distanceMeters / 1000.0
     return RunUi(
         id = id!!,
         duration = duration.formatted(),
