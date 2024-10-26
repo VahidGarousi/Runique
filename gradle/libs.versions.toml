@@ -43,7 +43,7 @@ koin = "3.5.3"
 ktor = "2.3.12"
 ktorClientLogging = "2.3.8"
 ktorServerCallLogging = "2.3.7"
-maps = "4.3.3"
+maps = "6.1.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
