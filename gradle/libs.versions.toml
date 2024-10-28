@@ -41,7 +41,7 @@ projectVersionCode = "1"
 playCore = "1.10.3"
 koin = "3.5.6"
 ktor = "2.3.12"
-ktorClientLogging = "2.3.12"
+ktorClientLogging = "3.0.0"
 ktorServerCallLogging = "2.3.7"
 maps = "6.1.2"
 
