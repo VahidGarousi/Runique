@@ -1,9 +1,7 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package ir.runique.auth.presentation.register
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
+
+import androidx.compose.foundation.text.input.TextFieldState
 import ir.runique.auth.domain.PasswordValidationState
 
 data class RegisterState(
