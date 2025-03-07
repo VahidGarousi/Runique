@@ -10,6 +10,7 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+        maven(url = "https://maven.myket.ir")
     }
 }
 dependencyResolutionManagement {
@@ -17,6 +18,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://maven.myket.ir")
     }
 }
 gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
